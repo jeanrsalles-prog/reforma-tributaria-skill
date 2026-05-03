@@ -14,6 +14,11 @@ Identificar qual modalidade de entrada está disponível:
 - Caminhos dos arquivos `sped_fiscal.txt` e `sped_contrib.txt` salvos localmente
 - Setor, regime tributário, UF, perfil (B2B/B2C/Misto)
 
+**Modalidade NCM — análise produto a produto (nível ALTO com SPED / MÉDIO manual):**
+- Lista de produtos com NCM (8 dígitos), receita anual e CMV por produto
+- OU SPED Fiscal para extração automática dos NCMs via C170
+- Usar `motor/motor_cmv_v5_0.py` — veja fluxo NCM abaixo
+
 **Modalidade DRE (nível MÉDIO):**
 - Arquivo PDF ou planilha com DRE
 - Setor, regime tributário, UF, perfil
@@ -70,12 +75,42 @@ Se encontrar algo posterior à **Res. CGIBS nº 6/2026 (30/04/2026)**, informar 
 **Se SPED disponível**, rodar o motor Python:
 ```bash
 cd [pasta_do_projeto]
-python3 motor/motor_cmv_v4_1.py
+python3 motor/motor_cmv_v4_1.py   # análise empresa (v4.4)
+# OU, para análise por produto:
+python3 motor/motor_cmv_v5_0.py   # análise NCM (v5.0)
 ```
 
 O motor extrai automaticamente do SPED: alíquotas ICMS entrada/saída, flag ST, % Simples, saldo credor PIS/COFINS.
 
 Exibir avisos extraídos pelo motor **antes de calcular** e confirmar com o usuário.
+
+**Se análise por NCM (motor v5.0):**
+```python
+from motor_cmv_v5_0 import ItemNCM, PortfolioNCM, calcular_portfolio, ler_sped_c170_ncm
+from motor_cmv_v4_1 import ClienteInput
+
+# Com SPED:
+itens = ler_sped_c170_ncm("sped_fiscal.txt")
+portfolio = PortfolioNCM(cliente=inp, itens=itens, fonte="sped", nivel_confianca="ALTO")
+
+# Ou manual:
+portfolio = PortfolioNCM(
+    cliente=inp,
+    itens=[
+        ItemNCM(ncm="19021900", descricao="Massas", receita_anual=3_000_000, cmv_anual=1_800_000),
+        ItemNCM(ncm="22030000", descricao="Cerveja", receita_anual=5_000_000, cmv_anual=2_800_000),
+    ],
+    fonte="manual",
+)
+
+resultado = calcular_portfolio(portfolio, ano=2033)
+print(resultado["relatorio"])
+```
+
+O motor v5.0 verifica automaticamente a atualização da base cClassTrib:
+- ≤ 15 dias: silencioso
+- 16–30 dias: alerta + confirmação
+- > 30 dias: bloqueio (use `forcar_cclasstrib=True` apenas em emergência)
 
 ### ETAPA 2 — Cálculo de Impactos
 O motor calcula para cada componente do CMV:
