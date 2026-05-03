@@ -1,8 +1,8 @@
 # Reforma Tributária — Skill para Claude Code
 
-Skill instalável no Claude Code com 3 comandos para diagnóstico tributário da Reforma Tributária (EC 132/2023 · LC 214/2025 · Decreto 12.955/2026 · Res. CGIBS nº 6/2026).
+Skill instalável no Claude Code com 4 comandos para diagnóstico tributário da Reforma Tributária (EC 132/2023 · LC 214/2025 · Decreto 12.955/2026 · Res. CGIBS nº 6/2026).
 
-**Motor:** v4.4 (01/05/2026) — inclui correção crítica IBS 2027–2028 = 0,10% efetivo.
+**Motor:** v5.0 (03/05/2026) — análise produto a produto por NCM + cClassTrib v1.50 + Pareto automático. Inclui correção crítica IBS 2027–2028 = 0,10% efetivo (Art. 597 Res. CGIBS nº 6/2026).
 
 ---
 
@@ -30,6 +30,8 @@ claude skills install github:jeanrsalles-prog/reforma-tributaria-skill
 /rt-analise sped    → usa arquivos SPED Fiscal + Contribuições (nível ALTO ±5%)
 /rt-analise dre     → usa DRE em PDF ou planilha (nível MÉDIO ±15%)
 /rt-analise manual  → entrada manual de dados (nível MÉDIO ±15%)
+/rt-analise ncm     → análise produto a produto por NCM via motor v5.0
+                      (ALTO com SPED / MÉDIO manual)
 ```
 
 ---
@@ -48,6 +50,7 @@ claude skills install github:jeanrsalles-prog/reforma-tributaria-skill
 
 - Tabela de transição 2026–2033 **corrigida** (IBS 2027–2028 = 0,10% per Art. 597 Res. CGIBS nº 6/2026)
 - Fatores setoriais atualizados (profissionais liberais 0,70 · saúde/educação 0,40 · cesta básica 0,00)
+- **cClassTrib v1.50** — 91 NCMs dos Anexos I–XVII da LC 214/2025 com staleness guard 15/30 dias
 - 7 regras de conduta invioláveis
 - Protocolo de atualização normativa quinzenal
 
