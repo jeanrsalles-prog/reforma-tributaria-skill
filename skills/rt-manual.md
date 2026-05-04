@@ -181,13 +181,13 @@ Salva o relatório como: relatorios/AAAA-MM-DD_Nome-Cliente_Setor.md
 | 2026 | 0,90% | 0,10% | 0% | Declaratório — não paga |
 | 2027 | ~2,20% | **0,10%** | 10% | CBS começa valer de verdade |
 | 2028 | ~4,40% | **0,10%** | 20% | Transição |
-| 2029 | 8,80% | ~13,30%* | 30% | Transição |
-| 2030 | 8,80% | ~15,50%* | 60% | Virada grande |
+| 2029 | ~6,60%* | ~13,30%* | 30% | Transição |
+| 2030 | 8,80% | ~15,50%* | 60% | Virada grande — CBS plena |
 | 2031 | 8,80% | ~16,60%* | 80% | Quase pleno |
 | 2032 | 8,80% | ~17,20%* | 90% | Pré-pleno |
 | 2033 | 8,80% | ~17,70%* | 100% | **Regime pleno** |
 
-*Estimativas — serão fixadas pelo Senado Federal
+*Estimativas — CBS plena (8,80%) a partir de 2030. IBS fixado anualmente pelo Senado Federal
 
 ---
 
