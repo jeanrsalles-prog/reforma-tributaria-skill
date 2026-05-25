@@ -16,11 +16,11 @@ cd '[pasta do projeto]'
 claude
 ```
 
-Depois use o comando `/rt-analise` e escolha uma das 3 modalidades abaixo.
+Depois use o comando `/rt-analise` e escolha uma das 4 modalidades abaixo.
 
 ---
 
-## As 3 Modalidades de Entrada
+## As 4 Modalidades de Entrada
 
 ### A) SPED — nível ALTO (preferencial, variação ±5%)
 Use quando o cliente enviou os arquivos de escrituração fiscal.
@@ -87,6 +87,43 @@ Saldo credor PIS/COFINS (R$): ___ ← opcional
 
 Roda a análise.
 ```
+
+### D) NCM — análise por produto (nível ALTO com SPED / MÉDIO manual)
+Use quando quiser ver o impacto separado por produto/SKU, não só no nível empresa.
+
+**Com SPED (extração automática):**
+```python
+from motor_cmv_v5_0 import ler_sped_c170_ncm, PortfolioNCM, calcular_portfolio
+from motor_cmv_v4_1 import ClienteInput
+
+inp = ClienteInput(nome="...", setor="...", regime="...", ...)
+itens = ler_sped_c170_ncm("sped_fiscal.txt")
+portfolio = PortfolioNCM(cliente=inp, itens=itens, fonte="sped", nivel_confianca="ALTO")
+resultado = calcular_portfolio(portfolio, ano=2033)
+print(resultado["relatorio"])
+```
+
+**Manual (lista de produtos):**
+```python
+from motor_cmv_v5_0 import ItemNCM, PortfolioNCM, calcular_portfolio
+
+portfolio = PortfolioNCM(
+    cliente=inp,
+    itens=[
+        ItemNCM(ncm="19021900", descricao="Massas alimentícias",
+                receita_anual=3_000_000, cmv_anual=1_800_000),
+        ItemNCM(ncm="22030000", descricao="Cerveja de malte",
+                receita_anual=5_000_000, cmv_anual=2_800_000),
+    ],
+    fonte="manual",
+)
+resultado = calcular_portfolio(portfolio, ano=2033)
+```
+
+> **Atenção cClassTrib:** o motor avisa se a base NCM estiver desatualizada.
+> - 15–30 dias sem verificar: alerta + pedido de confirmação
+> - > 30 dias: bloqueio — atualizar `motor/data/cclasstrib_status.json` antes de rodar
+> - URL para verificar: https://dfe-portal.svrs.rs.gov.br/DFE/TabelaClassificacaoTributaria
 
 ---
 
